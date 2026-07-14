@@ -1,4 +1,4 @@
-// RUN: %swift -typecheck -verify -parse-stdlib -target arm64-apple-xros1.0 %s -sdk %S/Inputs/XROS1.1.sdk
+// RUN: %swift -typecheck -verify -parse-stdlib -target arm64-apple-xros1.0 %s -sdk %S/../Inputs/XROSMockSDK
 
 @available(iOS 17.4, *)
 public func doSomething() { }
