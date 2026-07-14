@@ -2,7 +2,10 @@
 // RUN: %empty-directory(%t/sdk)
 // RUN: split-file %s %t/src
 
-// RUN: %target-swift-frontend(mock-sdk: %clang-importer-sdk) -typecheck %t/src/main.swift \
+// RUN: cp -R %clang-importer-sdk-path/. %t/sdk
+// RUN: cp %S/../Inputs/XROSMockSDK/SDKSettings.json %t/sdk/SDKSettings.json
+
+// RUN: %target-swift-frontend(mock-sdk: -enable-source-import -sdk %t/sdk -I %t/sdk/swift-modules) -typecheck %t/src/main.swift \
 // RUN:   -import-objc-header %t/src/Test.h \
 // RUN:   -swift-version 5 \
 // RUN:   -target %target-swift-5.1-abi-triple \

@@ -6,7 +6,11 @@
 // UNSUPPORTED: OS=windows-msvc
 
 // RUN: %empty-directory(%t)
-// RUN: %target-swift-frontend(mock-sdk: %clang-importer-sdk) -target %target-swift-5.9-abi-triple -swift-version 6 -I %S/Inputs/dependencies -parse-as-library -dump-ast -dump-ast-format json-zlib %S/ast-dump-json-no-crash.swift -module-name main -o - > %t/main.jsonz
+// RUN: %empty-directory(%t/sdk)
+// RUN: cp -R %clang-importer-sdk-path/. %t/sdk
+// RUN: cp %S/../Inputs/XROSMockSDK/SDKSettings.json %t/sdk/SDKSettings.json
+
+// RUN: %target-swift-frontend(mock-sdk: -enable-source-import -sdk %t/sdk -I %t/sdk/swift-modules) -target %target-swift-5.9-abi-triple -swift-version 6 -I %S/Inputs/dependencies -parse-as-library -dump-ast -dump-ast-format json-zlib %S/ast-dump-json-no-crash.swift -module-name main -o - > %t/main.jsonz
 // RUN: %{python} -c 'import sys, zlib; sys.stdout.write(zlib.decompress(sys.stdin.buffer.read()).decode())' < %t/main.jsonz | %FileCheck %s
 
 // CHECK:      {"_kind":"source_file",

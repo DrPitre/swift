@@ -1,5 +1,10 @@
-// RUN: %target-typecheck-verify-swift -verify-ignore-unrelated -sdk %clang-importer-sdk -module-name main -I %S/Inputs -enable-builtin-module
-// RUN: %target-typecheck-verify-swift -verify-ignore-unrelated -sdk %clang-importer-sdk -module-name main -I %S/Inputs -enable-builtin-module -enable-experimental-feature ParserASTGen
+// RUN: %empty-directory(%t)
+// RUN: %empty-directory(%t/sdk)
+// RUN: cp -R %clang-importer-sdk-path/. %t/sdk
+// RUN: cp %S/../Inputs/XROSMockSDK/SDKSettings.json %t/sdk/SDKSettings.json
+
+// RUN: %target-typecheck-verify-swift -verify-ignore-unrelated -enable-source-import -sdk %t/sdk -I %t/sdk/swift-modules -module-name main -I %S/Inputs -enable-builtin-module
+// RUN: %target-typecheck-verify-swift -verify-ignore-unrelated -enable-source-import -sdk %t/sdk -I %t/sdk/swift-modules -module-name main -I %S/Inputs -enable-builtin-module -enable-experimental-feature ParserASTGen
 
 // REQUIRES: swift_feature_ParserASTGen
 
